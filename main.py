@@ -9,8 +9,8 @@ from fastapi import FastAPI, HTTPException, File, UploadFile
 from supabase import create_client, Client
 import os
 from dotenv import load_dotenv
-from schema import AnomaliesLists_Branch, AnomaliesDetail_Branch, Branch_Feedback_Resolve, Branch_EditDetail
-from model_process import pre_processing_data, predict_data
+from .schema import AnomaliesLists_Branch, AnomaliesDetail_Branch, Branch_Feedback_Resolve, Branch_EditDetail
+from .model_process import pre_processing_data, predict_data
 
 load_dotenv()
 
@@ -31,6 +31,11 @@ def store_to_database(df):
             raise Exception(f"Error storing data: {response}")
     except Exception as e:
         print(f"Error storing data: {e}")
+
+@app.get("/")
+def success():
+    return {"status" : "deploy successfully"}
+
 
 @app.post("/upload_csv")
 async def upload_csv(file: UploadFile = File(...)):
